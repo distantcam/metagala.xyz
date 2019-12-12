@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/image/(.*)", "destination": "https://raw.githubusercontent.com/distantcam/metagala.xyz/master/$1" }
+  "redirects": [
+    { "source": "/image/(.*)", "destination": "https://raw.githubusercontent.com/distantcam/metagala.xyz/master/$1", "statusCode": 302 }
   ]
 }
