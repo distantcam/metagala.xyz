@@ -2,6 +2,6 @@
   "version": 2,
   "alias": "metagala.xyz",
   "rewrites": [
-    { "source": "/image/(.*)", "destination": "https://raw.githubusercontent.com/distantcam/imagehosting/master/$1" }
+    { "source": "/image/(.*)", "destination": "https://raw.githubusercontent.com/distantcam/metagala.xyz/master/$1" }
   ]
 }
