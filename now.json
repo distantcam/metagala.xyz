@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "alias": "metagala.xzy",
+  "alias": "metagala.xyz",
   "rewrites": [
     { "source": "/images/(.*)", "destination": "https://raw.githubusercontent.com/distantcam/metagala.xyz/master/images/$1" }
   ]
