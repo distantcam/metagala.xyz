@@ -7,6 +7,7 @@
   <title>Metagalaxyz</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/Primer/11.0.0/build.css" rel="stylesheet">
   <style>
     body {
       background-color: #efefef;
@@ -17,6 +18,10 @@
 
     h1 {
       font-weight: 400;
+    }
+
+    img {
+      display: block;
     }
 
     .gallery {
@@ -81,6 +86,15 @@
       display: block;
     }
 
+    .copy {
+      background-color: transparent;
+      display: inline-block;
+      border: none;
+      padding: 0;
+      margin: 5px;
+      vertical-align: middle;
+    }
+
   </style>
 </head>
 <body>
@@ -88,23 +102,25 @@
   <div id="app">
     <h1 class="title">Metagalaxyz</h1>
 
-    <div class="gallery">
+    <section class="gallery">
       <figure class="image" v-for="(image, index) in images" :key="index">
         <a :href="'#img' + index">
           <img class="image__pic" :src="image.download_url" />
         </a>
         <figcaption class="image__name">
           <span>{{image.name}}</span>
-          <a class="copy" :data-clipboard-text="image.name">
+          <button class="copy" :data-clipboard-text="image.name" @mouseleave="clearTooltip" @blur="clearTooltip">
             <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/clippy.svg" alt="Copy to clipboard">
-          </a>
+          </button>
         </figcaption>
       </figure>
-    </div>
+    </section>
 
-    <a v-for="(image, index) in images" :key="index" href="#_" class="lightbox" :id="'img' + index">
-      <img class="lightbox__image" :src="image.download_url" />
-    </a>
+    <section class="lightboxes">
+      <a v-for="(image, index) in images" :key="index" href="#_" class="lightbox" :id="'img' + index">
+        <img class="lightbox__image" :src="image.download_url" />
+      </a>
+    </section>
 
   </div>
 
@@ -129,12 +145,44 @@
         fetchData: async function() {
           const { data } = await axios.get("https://api.github.com/repos/distantcam/metagala.xyz/contents/images");
           this.images = data;
+        },
+
+        clearTooltip: function(e) {
+          e.target.setAttribute('class','copy');
+          e.target.removeAttribute('aria-label');
         }
       }
 
     })
 
-    new ClipboardJS('.copy');
+    const clipboard = new ClipboardJS('.copy');
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+      showTooltip(e.trigger, 'Copied!');
+    });
+
+    clipboard.on('error', function(e) {
+      showTooltip(e.trigger, fallbackMessage(e.action));
+    });
+
+    function showTooltip(elem, msg) {
+      elem.setAttribute('class', 'copy tooltipped tooltipped-s');
+      elem.setAttribute('aria-label', msg);
+    }
+
+    function fallbackMessage(action) {
+      var actionMsg='';
+      var actionKey=(action==='cut'?'X':'C');
+      if (/iPhone|iPad/i.test(navigator.userAgent)) {
+        actionMsg='No support :(';
+      } else if (/Mac/i.test(navigator.userAgent)) {
+        actionMsg='Press ⌘-'+actionKey+' to '+action;
+      } else {
+        actionMsg='Press Ctrl-'+actionKey+' to '+action;
+      }
+      return actionMsg;
+    }
   </script>
 
 </body>
