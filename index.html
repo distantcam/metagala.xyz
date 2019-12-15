@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Metagalaxyz</title>
+  <meta name="Description" content="Image gallery of metagala.xyz">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/Primer/11.0.0/build.css" rel="stylesheet">
@@ -105,7 +106,7 @@
     <section class="gallery">
       <figure class="image" v-for="(image, index) in images" :key="index">
         <a :href="'#img' + index">
-          <img class="image__pic" :src="image.download_url" />
+          <img class="image__pic" :src="image.download_url" :alt="image.name" />
         </a>
         <figcaption class="image__name">
           <span>{{image.name}}</span>
@@ -116,7 +117,7 @@
       </figure>
     </section>
 
-    <section class="lightboxes">
+    <section class="lightboxes" aria-hidden="true">
       <a v-for="(image, index) in images" :key="index" href="#_" class="lightbox" :id="'img' + index">
         <img class="lightbox__image" :src="image.download_url" />
       </a>
@@ -144,6 +145,7 @@
       methods: {
         fetchData: async function() {
           const { data } = await axios.get("https://api.github.com/repos/distantcam/metagala.xyz/contents/images");
+          data.sort(function(a, b) { return a.name.localeCompare(b.name, 'en', {'sensitivity': 'base'}); });
           this.images = data;
         },
 
