@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Metagalaxyz</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #efefef;
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+    }
+
+    h1 {
+      font-weight: 400;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 80vw;
+      margin: 0 auto;
+    }
+
+    .image {
+      background-color: #fff;
+      margin: 5px;
+      width: 300px;
+    }
+
+    .image__pic {
+      width: 300px;
+      height: 200px;
+      object-fit: contain;
+    }
+
+    .image__name {
+      vertical-align: bottom;
+      margin: 30px;
+      text-align: center;
+      overflow-wrap: break-word;
+    }
+
+    .lightbox {
+      position: fixed;
+      z-index: 999;
+      top: -100%;
+      bottom: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, .8);
+      opacity: 0;
+
+      -webkit-transition:.5s ease-in-out;
+      -moz-transition:.5s ease-in-out;
+      -ms-transition:.5s ease-in-out;
+      -o-transition:.5s ease-in-out;
+      transition:.5s ease-in-out;
+    }
+
+    .lightbox__image {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      max-width: 90%;
+      max-height: 80%;
+    }
+
+    .lightbox:target {
+      top: 0;
+      bottom: 0;
+      opacity: 1;
+      display: block;
+    }
+
+  </style>
+</head>
+<body>
+  
+  <div id="app">
+    <h1 class="title">Metagalaxyz</h1>
+
+    <div class="gallery">
+      <figure class="image" v-for="(image, index) in images" :key="index">
+        <a :href="'#img' + index">
+          <img class="image__pic" :src="image.download_url" />
+        </a>
+        <figcaption class="image__name">
+          <span>{{image.name}}</span>
+          <a class="copy" :data-clipboard-text="image.name">
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/clippy.svg" alt="Copy to clipboard">
+          </a>
+        </figcaption>
+      </figure>
+    </div>
+
+    <a v-for="(image, index) in images" :key="index" href="#_" class="lightbox" :id="'img' + index">
+      <img class="lightbox__image" :src="image.download_url" />
+    </a>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+  <script>
+    new Vue({
+
+      el: '#app',
+
+      data: {
+        images: null
+      },
+
+      created: function () {
+        this.fetchData();
+      },
+
+      methods: {
+        fetchData: async function() {
+          const { data } = await axios.get("https://api.github.com/repos/distantcam/metagala.xyz/contents/images");
+          this.images = data;
+        }
+      }
+
+    })
+
+    new ClipboardJS('.copy');
+  </script>
+
+</body>
+</html>
