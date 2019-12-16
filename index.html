@@ -80,14 +80,14 @@
       max-height: 80%;
     }
 
-    .lightbox:target {
+    .lightbox__show {
       top: 0;
       bottom: 0;
       opacity: 1;
       display: block;
     }
 
-    .copy {
+    .clearBtn {
       background-color: transparent;
       display: inline-block;
       border: none;
@@ -96,33 +96,75 @@
       vertical-align: middle;
     }
 
+    .header {
+      display: flex;
+      flex-direction: row;
+      max-width: 80vw;
+      margin: 32px auto 16px;
+    }
+
+    .header::before {
+      content: '';
+      flex: 1;
+    }
+
+    .title {
+      flex: 2;
+    }
+
+    .search {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search__input {
+      padding: 4px 12px;
+      text-align: center;
+      color: rgba(0,0,0,.70);
+      border: 1px solid rgba(0,0,0,.12);
+      background: white;
+    }
+
+    .search__label {
+      padding: 4px 12px;
+      font-size: 12px;
+      color: rgba(0,0,0,.50);
+    }
+
   </style>
 </head>
 <body>
   
   <div id="app">
-    <h1 class="title">Metagalaxyz</h1>
+    <header class="header">
+      <h1 class="title">Metagalaxyz</h1>
+      <section role="search" class="search">
+        <label class="search__label" for="search">Search title:</label>  
+        <input class="search__input" id="search" type="text" v-model="search" />
+        <button v-if="search" class="clearBtn" @click="clearSearch">
+          <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/x.svg" alt="Clear Search">
+        </button>
+      </section>
+    </header>
 
     <section class="gallery">
-      <figure class="image" v-for="(image, index) in images" :key="index">
-        <a :href="'#img' + index">
-          <img class="image__pic" :src="image.download_url" :alt="image.name" />
-        </a>
+      <figure class="image" v-for="(image, index) in filteredList" :key="index">
+        <img class="image__pic" :src="image.download_url" :alt="image.name" @click="showLightbox(image.download_url)" />
+
         <figcaption class="image__name">
           <span>{{image.name}}</span>
-          <button class="copy" :data-clipboard-text="image.name" @mouseleave="clearTooltip" @blur="clearTooltip">
+          <button class="clearBtn" :data-clipboard-text="image.name" @mouseleave="clearTooltip" @blur="clearTooltip">
             <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/clippy.svg" alt="Copy to clipboard">
           </button>
         </figcaption>
       </figure>
     </section>
 
-    <section class="lightboxes" aria-hidden="true">
-      <a v-for="(image, index) in images" :key="index" href="#_" class="lightbox" :id="'img' + index">
-        <img class="lightbox__image" :src="image.download_url" />
-      </a>
-    </section>
-
+    <div class="lightbox" :class="{lightbox__show: currentImage}" @click="showLightbox(null)">
+      <img class="lightbox__image" :src="currentImage" />
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
@@ -135,7 +177,17 @@
       el: '#app',
 
       data: {
-        images: null
+        images: null,
+        currentImage: null,
+        search: ''
+      },
+
+      computed: {
+        filteredList() {
+          return this.images ? this.images.filter(image => {
+            return image.name.toLowerCase().includes(this.search.toLowerCase())
+          }) : null
+        }
       },
 
       created: function () {
@@ -152,7 +204,11 @@
         clearTooltip: function(e) {
           e.target.setAttribute('class','copy');
           e.target.removeAttribute('aria-label');
-        }
+        },
+
+        showLightbox: function(url) { this.currentImage = url },
+
+        clearSearch: function() { this.search = '' }
       }
 
     })
