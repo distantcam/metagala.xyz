@@ -30,7 +30,7 @@
       flex-wrap: wrap;
       justify-content: center;
       width: 80vw;
-      margin: 0 auto;
+      margin: 0 auto 32px;
     }
 
     .image {
@@ -133,6 +133,36 @@
       color: rgba(0,0,0,.50);
     }
 
+    .goTop {
+      border-radius: 5px;
+      background-color: rgb(1,14,27);
+      background-color: rgba(1, 14, 27, .7);
+      position: fixed;
+      width: 45px;
+      height: 45px;
+      display: block;
+      right: 15px;
+      bottom: 15px;
+      border: none;
+      opacity: 0;
+      z-index: -1;
+
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .goTop:hover {
+      opacity: 1;
+      background-color: rgb(1,14,27);
+      background-color: rgba(1, 14, 27, .9);
+    }
+
+    .isVisible {
+      opacity: .8;
+      z-index: 4;
+      transition: all .4s ease-in;
+    }
+
   </style>
 </head>
 <body>
@@ -162,14 +192,17 @@
       </figure>
     </section>
 
-    <div class="lightbox" :class="{lightbox__show: currentImage}" @click="showLightbox(null)">
+    <section class="lightbox" :class="{lightbox__show: currentImage}" @click="showLightbox(null)" aria-hidden="true">
       <img class="lightbox__image" :src="currentImage" />
-    </div>
+    </section>
+
+    <button class="goTop" @click="backToTop">Top</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
   <script>
     new Vue({
@@ -208,7 +241,13 @@
 
         showLightbox: function(url) { this.currentImage = url },
 
-        clearSearch: function() { this.search = '' }
+        clearSearch: function() { this.search = '' },
+
+        backToTop: function() {
+          $('html,body').stop().animate({
+            scrollTop: 0
+          }, 'slow', 'swing');
+        }
       }
 
     })
@@ -241,6 +280,15 @@
       }
       return actionMsg;
     }
+
+    $(document).bind('scroll', function() {
+      var backToTopButton = $('.goTop');
+      if ($(document).scrollTop() > 250) {
+        backToTopButton.addClass('isVisible');
+      } else {
+        backToTopButton.removeClass('isVisible');
+      }
+    });
   </script>
 
 </body>
