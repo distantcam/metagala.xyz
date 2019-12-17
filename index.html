@@ -185,7 +185,7 @@
 
         <figcaption class="image__name">
           <span>{{image.name}}</span>
-          <button class="clearBtn" :data-clipboard-text="image.name" @mouseleave="clearTooltip" @blur="clearTooltip">
+          <button class="clearBtn copy" :data-clipboard-text="image.name" @mouseleave="clearTooltip" @blur="clearTooltip">
             <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/clippy.svg" alt="Copy to clipboard">
           </button>
         </figcaption>
@@ -235,7 +235,7 @@
         },
 
         clearTooltip: function(e) {
-          e.target.setAttribute('class','copy');
+          e.target.setAttribute('class','clearBtn copy');
           e.target.removeAttribute('aria-label');
         },
 
@@ -264,7 +264,7 @@
     });
 
     function showTooltip(elem, msg) {
-      elem.setAttribute('class', 'copy tooltipped tooltipped-s');
+      elem.setAttribute('class', 'clearBtn copy tooltipped tooltipped-s');
       elem.setAttribute('aria-label', msg);
     }
 
