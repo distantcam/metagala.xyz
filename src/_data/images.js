@@ -22,13 +22,15 @@ const encodeImageToBlurhash = path =>
 async function getImages() {
   const files = fs.readdirSync(path.resolve(__dirname, "../../images/"));
 
-  const fileMaps = files.map(async (file) => {
-    return {
-      inputPath: file,
-      url: `https://raw.githubusercontent.com/distantcam/metagala.xyz/master/images/${file}`,
-      ...await encodeImageToBlurhash(path.resolve(__dirname, `../../images/${file}`))
-    };
-  });
+  const fileMaps = files
+    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+    .map(async (file) => {
+      return {
+        inputPath: file,
+        url: `https://raw.githubusercontent.com/distantcam/metagala.xyz/master/images/${file}`,
+        ...await encodeImageToBlurhash(path.resolve(__dirname, `../../images/${file}`))
+      };
+    });
 
   return Promise.all(fileMaps);
 }
