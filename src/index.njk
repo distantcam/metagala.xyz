@@ -59,7 +59,7 @@ layout: default
   </div>
 </main>
 
-<div class="fixed inset-0 z-50 grid w-screen h-screen p-4 bg-black bg-opacity-75 sm:p-12 place-items-center"
+<div class="fixed inset-0 z-50 w-screen h-screen p-4 bg-black bg-opacity-75 sm:p-12"
   @click="close()"
   x-show="lightbox"
   x-transition:enter="transition ease-out duration-300"
@@ -69,7 +69,7 @@ layout: default
   x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
 >
-  <img class="object-contain w-full h-full"
+  <img class="fixed inset-0 object-scale-down w-screen h-screen p-4 sm:p-12"
     :src="lightboxSrc"
     x-show="lightbox"
     x-transition:enter="transition ease-out duration-300 delay-150"
