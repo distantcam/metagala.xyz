@@ -23,6 +23,6 @@
     "postcss-nested": "^5.0.5",
     "rimraf": "^3.0.2",
     "sharp": "^0.27.2",
-    "tailwindcss": "^2.0.3"
+    "tailwindcss": "^2.0.4"
   }
 }
