@@ -1,7 +1,7 @@
 name: Auto-merge
 
 on:
-  - pull_request
+  - pull_request_target
 
 jobs:
   auto-merge:
@@ -10,4 +10,3 @@ jobs:
       - uses: tjenkinson/gh-action-auto-merge-dependency-updates@v1
         with:
           allowed-actors: dependabot-preview[bot], dependabot[bot]
-          repo-token: ${{ secrets.AUTOMERGE_TOKEN }}
