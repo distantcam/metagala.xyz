@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1",
-    "autoprefixer": "^10.3.5",
+    "autoprefixer": "^10.3.6",
     "blurhash": "^1.1.4",
     "cross-env": "^7.0.3",
     "cssnano": "^5.0.8",
