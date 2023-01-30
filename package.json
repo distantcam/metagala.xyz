@@ -11,7 +11,7 @@
     "clean": "rimraf _site"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.0-beta.2",
+    "@11ty/eleventy": "^2.0.0-canary.34",
     "autoprefixer": "^10.4.13",
     "blurhash": "^2.0.4",
     "cross-env": "^7.0.3",
