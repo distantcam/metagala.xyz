@@ -21,7 +21,7 @@
     "postcss": "^8.4.30",
     "postcss-cli": "^10.1.0",
     "postcss-nested": "^6.0.1",
-    "rimraf": "^5.0.4",
+    "rimraf": "^5.0.5",
     "sharp": "^0.32.6",
     "tailwindcss": "^2.2.19"
   }
