@@ -1,8 +1,7 @@
 module.exports = ({ env }) => ({
   plugins: {
-		tailwindcss: {},
+		'@tailwindcss/postcss': {},
 		'postcss-nested': {},
-		autoprefixer: {},
 		cssnano: env === 'production' ? { 
 			preset: [ 'default', { discardComments: { removeAll: true } } ]
 		} : false
