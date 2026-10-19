@@ -11,7 +11,7 @@
     "clean": "rimraf _site"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy": "^3.1.7",
     "@tailwindcss/postcss": "^4.3.3",
     "blurhash": "^2.0.5",
     "cross-env": "^10.1.0",
