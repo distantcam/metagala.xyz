@@ -1,5 +1,4 @@
 const fs = require("fs");
-const htmlmin = require("html-minifier");
 
 module.exports = function(eleventyConfig) {
 
@@ -26,14 +25,14 @@ module.exports = function(eleventyConfig) {
   }
 };
 
-function htmlminTransform(content, outputPath) {
+async function htmlminTransform(content, outputPath) {
   if( outputPath.endsWith(".html") ) {
-    let minified = htmlmin.minify(content, {
+    const { minify } = await import("html-minifier");
+    return await minify(content, {
       useShortDoctype: true,
       removeComments: true,
       collapseWhitespace: true
     });
-    return minified;
   }
   return content;
 }
